@@ -30,9 +30,15 @@
         <h2>我也喜欢你！❤️</h2>
     </div>
 
-    <script>
-        // 这里是控制逻辑的部分
+<script>
         let dislikeCount = 0;
+
+        // --- 预加载图片：解决你说的“点完反应慢”的问题 ---
+        const imagesToPreload = ["normal.png", "sad.png", "cry.png", "hug.png"];
+        imagesToPreload.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
 
         function dislike() {
             dislikeCount++;
@@ -40,12 +46,10 @@
             let btnLike = document.getElementById('btn-like');
             let img = document.getElementById('character-img');
 
-            // 每次点击，"不喜欢"变小，"喜欢"变大
             let currentScale = 1 - (dislikeCount * 0.2); 
             let likeScale = 1 + (dislikeCount * 0.2);
 
             if (currentScale <= 0.2) {
-                // 点太多次了，“不喜欢”按钮直接消失！
                 btnDislike.style.display = 'none'; 
             } else {
                 btnDislike.style.transform = `scale(${currentScale})`;
@@ -53,19 +57,18 @@
             
             btnLike.style.transform = `scale(${likeScale})`;
 
-            // 随着拒绝次数改变表情包
             if (dislikeCount === 1) {
-                img.src = "sad.png"; // 第一次拒绝，委屈
+                img.src = "sad.png"; 
             } else if (dislikeCount >= 2) {
-                img.src = "cry.png"; // 第二次及以上拒绝，大哭
+                img.src = "cry.png"; 
             }
         }
 
         function like() {
-            // 隐藏初始画面，显示拥抱画面
             document.getElementById('main-scene').classList.add('hidden');
             document.getElementById('hug-scene').classList.remove('hidden');
         }
     </script>
 </body>
+
 </html>
