@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你的小惊喜</title>
+    <style>
+        /* 这里是设计网页样式的部分 */
+        body { text-align: center; font-family: sans-serif; background-color: #ffe6e6; padding-top: 50px; overflow: hidden; }
+        img { width: 250px; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+        .buttons { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px; height: 100px; }
+        button { padding: 12px 24px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        #btn-like { background-color: #ff4d4d; color: white; font-weight: bold; }
+        #btn-dislike { background-color: #cccccc; color: black; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div id="main-scene">
+        <img id="character-img" src="normal.png" alt="小人">
+        <h2>你喜欢我吗？</h2>
+        <div class="buttons">
+            <button id="btn-like" onclick="like()">喜欢</button>
+            <button id="btn-dislike" onclick="dislike()">不喜欢</button>
+        </div>
+    </div>
+
+    <div id="hug-scene" class="hidden">
+        <img src="hug.png" alt="拥抱">
+        <h2>我也喜欢你！❤️</h2>
+    </div>
+
+    <script>
+        // 这里是控制逻辑的部分
+        let dislikeCount = 0;
+
+        function dislike() {
+            dislikeCount++;
+            let btnDislike = document.getElementById('btn-dislike');
+            let btnLike = document.getElementById('btn-like');
+            let img = document.getElementById('character-img');
+
+            // 每次点击，"不喜欢"变小，"喜欢"变大
+            let currentScale = 1 - (dislikeCount * 0.2); 
+            let likeScale = 1 + (dislikeCount * 0.2);
+
+            if (currentScale <= 0.2) {
+                // 点太多次了，“不喜欢”按钮直接消失！
+                btnDislike.style.display = 'none'; 
+            } else {
+                btnDislike.style.transform = `scale(${currentScale})`;
+            }
+            
+            btnLike.style.transform = `scale(${likeScale})`;
+
+            // 随着拒绝次数改变表情包
+            if (dislikeCount === 1) {
+                img.src = "sad.png"; // 第一次拒绝，委屈
+            } else if (dislikeCount >= 2) {
+                img.src = "cry.png"; // 第二次及以上拒绝，大哭
+            }
+        }
+
+        function like() {
+            // 隐藏初始画面，显示拥抱画面
+            document.getElementById('main-scene').classList.add('hidden');
+            document.getElementById('hug-scene').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
